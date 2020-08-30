@@ -1,13 +1,30 @@
 import React, {Component} from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import logo from './images/logo.png'
-import './login.less'
+import {login} from '../../api/index'
+import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 
-export default class Login extends Component {
-    onFinish = (values) => {
-        console.log(values)
+import logo from './images/logo.png'
+import './index.less'
+
+export default class Index extends Component {
+    onFinish = async (values) => {
+        const {username, password} = values;
+        const result = await login(username, password);
+        if (result.status === 0) {
+
+            // save the current user
+            const user = result.data;
+            memoryUtils.user = user;
+            storageUtils.saveUser(user);
+
+            // forward to admin page
+            this.props.history.replace('/');
+        } else {
+            message.error(result.msg)
+        }
     };
 
     render() {
