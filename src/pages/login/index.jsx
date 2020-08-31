@@ -6,8 +6,9 @@ import {login} from '../../api/index'
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 
-import logo from './images/logo.png'
+import logo from '../../assets/images/logo.png'
 import './index.less'
+import {Redirect} from 'react-router-dom';
 
 export default class Index extends Component {
     onFinish = async (values) => {
@@ -28,6 +29,11 @@ export default class Index extends Component {
     };
 
     render() {
+        const user = memoryUtils.user;
+        if (user && user.username) {
+            return <Redirect to='/'/>
+        }
+
         return (
             <div className="login">
                 <header className="login-header">
