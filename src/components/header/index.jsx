@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
+import Pubsub from 'pubsub-js';
 import { Menu, Dropdown, Avatar, Button, Modal } from 'antd';
 import { UserOutlined, MenuUnfoldOutlined, MenuFoldOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
@@ -18,6 +19,7 @@ class Header extends Component {
         this.setState({
             collapsed: !this.state.collapsed,
         });
+        Pubsub.publish('Nav_Collapsed', this.state.collapsed);
     };
 
     redirectToHome = () => {
@@ -65,15 +67,17 @@ class Header extends Component {
     render() {
         return (
             <div className="header">
-
                 <header className="header-logo" onClick={this.redirectToHome}>
                     <img src={logo} alt="logo" />
                     <h2>后台管理系统</h2>
                 </header>
                 <div className="header-menu-button">
-                    <LinkButton onClick={this.toggleCollapsed}>
+                    <LinkButton onClick={this.toggleCollapsed} style={{color: 'white'}}>
                         {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
                     </LinkButton>
+                </div>
+                <div className="header-welcome">
+                    <span>欢迎, {memoryUtils.user.username}</span>
                 </div>
                 <div className="header-avatar">
                     <Dropdown overlay={this.menu}>

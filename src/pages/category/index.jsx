@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import PageHeader from '../../components/page-header';
 
 export default class Category extends Component {
     render() {
         return (
-            <div>Category</div>
+            <PageHeader />
         );
     }
 }

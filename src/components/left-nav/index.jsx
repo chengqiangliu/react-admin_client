@@ -1,34 +1,63 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import { Menu } from 'antd';
-import {
-    PieChartOutlined,
-    MailOutlined,
-} from '@ant-design/icons';
+import * as Icons from '@ant-design/icons';
 
 import './index.less'
+import menuList from '../../config/menuConfig'
 
 const { SubMenu } = Menu;
 
-export default class LeftNav extends Component {
+class LeftNav extends Component {
+     getMenuNodes = (menuList) => {
+         const path = this.props.location.pathname
+         return menuList.map((item) => {
+             const dynamicIcon = React.createElement(
+                 Icons[item.icon],
+             );
+             if (!item.children) {
+                 return (
+                     <Menu.Item key={item.key} icon={dynamicIcon}>
+                         <Link to={item.key}>
+                             <span>{item.title}</span>
+                         </Link>
+                     </Menu.Item>
+                 )
+             } else {
+                 const childItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
+                 if (childItem) {
+                     this.openKey = item.key;
+                 }
+                 return (
+                    <SubMenu key={item.key} title={item.title} icon={dynamicIcon}>
+                        {this.getMenuNodes(item.children)}
+                    </SubMenu>
+                 )
+             }
+         })
+     }
+
+    /**
+     * prepare data for render
+     */
+    componentWillMount() {
+        this.menuNodes = this.getMenuNodes(menuList);
+    }
+
     render() {
+        let path = this.props.location.pathname;
+        const openKey = this.openKey;
         return (
             <div className="left-nav">
-                <Menu mode="inline" theme="dark">
-                    <Menu.Item key="1" icon={<PieChartOutlined />}>
-                        <Link to='/home'>
-                            首页
-                        </Link>
-                    </Menu.Item>
-                    <SubMenu key="sub1" icon={<MailOutlined />} title="用户管理">
-                        <Menu.Item key="5">
-                            <Link to='/user'>
-                                用户管理
-                            </Link>
-                        </Menu.Item>
-                    </SubMenu>
+                <Menu mode="inline"
+                      theme="dark"
+                      selectedKeys={[path]}
+                      defaultOpenKeys={[openKey]}>
+                    {this.menuNodes}
                 </Menu>
             </div>
         );
     }
 }
+
+export default withRouter(LeftNav);

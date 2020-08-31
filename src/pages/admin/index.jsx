@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {Layout} from 'antd';
+import Pubsub from 'pubsub-js';
+
 import 'antd/dist/antd.less';
+import './index.less';
 
 import memoryUtils from '../../utils/memoryUtils';
 import Header from '../../components/header';
@@ -15,19 +18,34 @@ import Bar from '../bar';
 import Line from '../line';
 import Pie from '../pie';
 
+
 const { Footer, Sider, Content } = Layout;
 
 export default class Index extends Component {
+
+    state = {
+        collapsed: false,
+    };
+
+    componentDidMount() {
+        Pubsub.subscribe('Nav_Collapsed', (msg, collapsed) => {
+            this.setState({
+                collapsed: !this.state.collapsed,
+            });
+        });
+    }
+
     render() {
         const user = memoryUtils.user;
         if (!user || !user.username) {
             return <Redirect to='/login' />
         } else {
+            console.log('render.....')
             return (
                 <Layout style={{minHeight: '100%'}}>
                     <Header/>
                     <Layout>
-                        <Sider>
+                        <Sider collapsed={this.state.collapsed}>
                             <LeftNav/>
                         </Sider>
                         <Layout>
@@ -44,7 +62,9 @@ export default class Index extends Component {
                                     <Redirect to='/home'/>
                                 </Switch>
                             </Content>
-                            <Footer style={{textAlign: 'center', color: '#cccccc'}}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
+                            <Footer className="footer">
+                                <span>推荐使用谷歌浏览器，可以获得更佳页面操作体验</span>
+                            </Footer>
                         </Layout>
                     </Layout>
                 </Layout>
