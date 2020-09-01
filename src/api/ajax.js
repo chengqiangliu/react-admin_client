@@ -6,8 +6,10 @@ export default function ajax(url, data={}, method='GET') {
         let promise;
         if (method === 'POST') {
             promise = axios.post(url, data);
-        } else if (method === 'POST') {
-            promise = axios.get(url, {params: data});
+        } else {
+            promise = axios.get(url, {
+                params: data
+            });
         }
         promise.then(
             response => resolve(response.data)
@@ -15,5 +17,4 @@ export default function ajax(url, data={}, method='GET') {
             error => message.error(`请求失败，error：${error.message}`)
         )
     });
-
 }

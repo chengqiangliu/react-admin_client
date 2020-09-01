@@ -2,7 +2,12 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import Pubsub from 'pubsub-js';
 import { Menu, Dropdown, Avatar, Button, Modal } from 'antd';
-import { UserOutlined, MenuUnfoldOutlined, MenuFoldOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { UserOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    ExclamationCircleOutlined,
+    SettingOutlined,
+    LogoutOutlined } from '@ant-design/icons';
 
 import logo from '../../assets/images/logo.png'
 import LinkButton from '../link-button';
@@ -47,18 +52,21 @@ class Header extends Component {
         <Menu>
             <Menu.Item key="0">
                 <LinkButton>
-                    个人信息
+                    <UserOutlined />
+                    <span style={{marginLeft: 10}}>个人中心</span>
                 </LinkButton>
             </Menu.Item>
             <Menu.Item key="1">
                 <LinkButton>
-                    修改密码
+                    <SettingOutlined />
+                    <span style={{marginLeft: 10}}>个人设置</span>
                 </LinkButton>
             </Menu.Item>
             <Menu.Divider />
             <Menu.Item key="3">
                 <LinkButton onClick={this.logout}>
-                    退出系统
+                    <LogoutOutlined />
+                    <span style={{marginLeft: 10}}>退出登录</span>
                 </LinkButton>
             </Menu.Item>
         </Menu>
@@ -76,14 +84,14 @@ class Header extends Component {
                         {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
                     </LinkButton>
                 </div>
-                <div className="header-welcome">
-                    <span>欢迎, {memoryUtils.user.username}</span>
-                </div>
                 <div className="header-avatar">
                     <Dropdown overlay={this.menu}>
                         <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />}>
                         </Avatar>
                     </Dropdown>
+                </div>
+                <div className="header-username">
+                    <span>{memoryUtils.user.username}</span>
                 </div>
             </div>
         );
