@@ -9,6 +9,7 @@ import storageUtils from '../../utils/storageUtils';
 import logo from '../../assets/images/logo.png'
 import './index.less'
 import {Redirect} from 'react-router-dom';
+import LinkButton from '../../components/link-button';
 
 export default class Index extends Component {
     onFinish = async (values) => {
@@ -74,9 +75,9 @@ export default class Index extends Component {
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item>
 
-                            <a className="login-form-forgot" href="">
+                            <LinkButton className="login-form-forgot">
                                 Forgot password
-                            </a>
+                            </LinkButton>
                         </Form.Item>
 
                         <Form.Item>

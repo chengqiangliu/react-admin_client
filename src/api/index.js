@@ -4,3 +4,4 @@ export const login = (username, password) => ajax('/login', {username, password}
 export const addUser = (user) => ajax('/manage/user/add', user, 'POST');
 export const getCategoryList = (parentId) => ajax('/manage/category/list', {parentId}, 'GET');
 export const addCategory = (category) => ajax('/manage/category/add', category, 'POST');
+export const updateCategory = (category) => ajax('/manage/category/update', category, 'POST');

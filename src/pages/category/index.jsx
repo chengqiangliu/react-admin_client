@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Button, Table, Modal, message, Form, Input, Select} from 'antd';
+import {Card, Button, Table, Modal, message} from 'antd';
 import {ArrowRightOutlined, PlusOutlined} from '@ant-design/icons'
 
 import './index.less'
@@ -7,7 +7,7 @@ import PageHeader from '../../components/page-header';
 import LinkButton from '../../components/link-button';
 import CategoryAddForm from './categoryAddForm';
 import CategoryUpdateForm from './categoryUpdateForm';
-import {getCategoryList} from '../../api'
+import {getCategoryList, addCategory, updateCategory} from '../../api'
 
 export default class Category extends Component {
     state = {
@@ -25,31 +25,59 @@ export default class Category extends Component {
         });
     };
 
-    showUpdateModal = () => {
+    showUpdateModal = (category) => {
+        this.category = category;
         this.setState({
             stateStatus: 2,
         });
     };
 
-    addCatogory = (e) => {
+    addCatogory = async () => {
+        try {
+            const category = await this.addForm.validateFields();
+            const result = await addCategory(category);
+            if (result && result.status === 0) {
+                await this.getCategoryList();
+            } else {
+                message.error('添加分类失败');
+            }
+            this.addForm.resetFields();
+            this.setState({
+                stateStatus: 0,
+            });
+        }catch (e) {
+            message.error(e.message);
+        }
+    };
+
+    closeAddModal = () => {
+        this.addForm.resetFields();
         this.setState({
             stateStatus: 0,
         });
     };
 
-    closeAddModal = (e) => {
-        this.setState({
-            stateStatus: 0,
-        });
-    };
-
-    updateCatogory = (e) => {
-        this.setState({
-            stateStatus: 0,
-        });
+    updateCategory = async () => {
+        try {
+            const {categoryName} = await this.updateForm.validateFields();
+            const categoryId = this.category._id;
+            const result = await updateCategory({categoryId, categoryName});
+            this.updateForm.resetFields()
+            if (result && result.status === 0) {
+                await this.getCategoryList();
+            } else {
+                message.error('修改分类失败');
+            }
+            this.setState({
+                stateStatus: 0,
+            });
+        }catch (e) {
+            message.error(e.message);
+        }
     };
 
     closeUpdateModal = (e) => {
+        this.updateForm.resetFields();
         this.setState({
             stateStatus: 0,
         });
@@ -87,7 +115,7 @@ export default class Category extends Component {
             parentId: category._id,
             parentName: category.name,
         }, () => {
-            getCategoryList();
+            this.getCategoryList();
         });
     }
 
@@ -111,7 +139,11 @@ export default class Category extends Component {
                     return (
                         <span>
                             <LinkButton style={{color: '#0b85e8'}} onClick={() => this.showUpdateModal(category)}>修改分类</LinkButton>
-                            <LinkButton style={{color: '#0b85e8'}} onClick={() => this.showSubCategoryList(category)}>查看子分类</LinkButton>
+                            {
+                                this.state.parentId === '0' ?
+                                    <LinkButton style={{color: '#0b85e8'}} onClick={() => this.showSubCategoryList(category)}>查看子分类</LinkButton>
+                                : null
+                            }
                         </span>
                     )
                 }
@@ -119,7 +151,7 @@ export default class Category extends Component {
         ];
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.initColumns();
     }
 
@@ -130,6 +162,7 @@ export default class Category extends Component {
     render() {
         const extra = this.extra;
         const {loading, categoryList, subCategoryList, parentId, parentName} = this.state;
+        const category = this.category || {};
 
         const title = parentId === '0'? '一级分类列表' : (
                 <span>
@@ -157,16 +190,16 @@ export default class Category extends Component {
                     onOk={this.addCatogory}
                     onCancel={this.closeAddModal}
                 >
-                   <CategoryAddForm />
+                   <CategoryAddForm key="addForm" parentId={parentId} categoryList={categoryList} setForm={(form) => {this.addForm = form}}/>
                 </Modal>
 
                 <Modal
                     title="修改分类"
                     visible={this.state.stateStatus === 2}
-                    onOk={this.updateCatogory}
+                    onOk={this.updateCategory}
                     onCancel={this.closeUpdateModal}
                 >
-                    <CategoryUpdateForm />
+                    <CategoryUpdateForm key="updateForm" categoryName={category.name || ''} setForm={(form) => {this.updateForm = form}}/>
                 </Modal>
             </div>
         );

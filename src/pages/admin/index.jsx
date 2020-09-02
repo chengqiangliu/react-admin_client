@@ -40,7 +40,6 @@ export default class Index extends Component {
         if (!user || !user.username) {
             return <Redirect to='/login' />
         } else {
-            console.log('render.....')
             return (
                 <Layout style={{minHeight: '100%'}}>
                     <Header/>

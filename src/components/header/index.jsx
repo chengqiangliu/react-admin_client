@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import Pubsub from 'pubsub-js';
-import { Menu, Dropdown, Avatar, Button, Modal } from 'antd';
+import { Menu, Dropdown, Avatar, Modal } from 'antd';
 import { UserOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -27,12 +27,10 @@ class Header extends Component {
         Pubsub.publish('Nav_Collapsed', this.state.collapsed);
     };
 
-    redirectToHome = () => {
-        this.props.history.push('/home');
-    };
+    redirectToHome = () => this.props.history.push('/home');
 
     logout = () => {
-        Modal.confirm({
+        return Modal.confirm({
             icon: <ExclamationCircleOutlined />,
             content: '确认要退出系统吗？',
             okText: '确认',

@@ -70,7 +70,7 @@ class PageHeader extends Component {
     /**
      * prepare data for render
      */
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.pageList = this.getPageList(menuList);
     }
 
