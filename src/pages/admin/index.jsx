@@ -48,7 +48,7 @@ export default class Index extends Component {
                             <LeftNav/>
                         </Sider>
                         <Layout>
-                            <Content>
+                            <Content style={{margin: '0 5px', backgroundColor: '#fff'}}>
                                 <Switch>
                                     <Route path='/home' component={Home}/>
                                     <Route path='/category' component={Category}/>

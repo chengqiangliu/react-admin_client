@@ -32,12 +32,35 @@ export default class Category extends Component {
         });
     };
 
+    getCategoryList = async (parentId) => {
+        this.setState({loading: true});
+        parentId = parentId || this.state.parentId;
+        const result = await getCategoryList(parentId);
+        this.setState({loading: false});
+        if (result && result.status === 0) {
+            const categoryList = result.data;
+            if(parentId === '0') {
+                this.setState({categoryList})
+            } else {
+                this.setState({
+                    subCategoryList: categoryList
+                })
+            }
+        } else {
+            message.error('获取分类列表失败');
+        }
+    }
+
     addCatogory = async () => {
         try {
-            const category = await this.addForm.validateFields();
-            const result = await addCategory(category);
+            const {parentId, categoryName} = await this.addForm.validateFields();
+            const result = await addCategory({parentId, categoryName});
             if (result && result.status === 0) {
-                await this.getCategoryList();
+                if (parentId === this.state.parentId) {
+                    await this.getCategoryList();
+                } else if (parentId === '0') {
+                    await this.getCategoryList('0');
+                }
             } else {
                 message.error('添加分类失败');
             }
@@ -46,7 +69,7 @@ export default class Category extends Component {
                 stateStatus: 0,
             });
         }catch (e) {
-            message.error(e.message);
+            console.log(e.message);
         }
     };
 
@@ -72,7 +95,7 @@ export default class Category extends Component {
                 stateStatus: 0,
             });
         }catch (e) {
-            message.error(e.message);
+            console.log(e.message);
         }
     };
 
@@ -82,25 +105,6 @@ export default class Category extends Component {
             stateStatus: 0,
         });
     };
-
-    getCategoryList = async (parentId) => {
-        this.setState({loading: true});
-        parentId = parentId || this.state.parentId;
-        const result = await getCategoryList(parentId);
-        this.setState({loading: false});
-        if (result && result.status === 0) {
-            const categoryList = result.data;
-            if(parentId === '0') {
-                this.setState({categoryList})
-            } else {
-                this.setState({
-                    subCategoryList: categoryList
-                })
-            }
-        } else {
-            message.error('获取分类列表失败');
-        }
-    }
 
     showCategoryList = () => {
         this.setState({
