@@ -7,7 +7,7 @@ import 'antd/dist/antd.less';
 import './index.less';
 
 import memoryUtils from '../../utils/memoryUtils';
-import Header from '../../components/header';
+import HeaderContent from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../home';
 import User from '../user';
@@ -19,7 +19,7 @@ import Line from '../line';
 import Pie from '../pie';
 
 
-const { Footer, Sider, Content } = Layout;
+const { Header, Footer, Sider, Content } = Layout;
 
 export default class Index extends Component {
 
@@ -41,14 +41,16 @@ export default class Index extends Component {
             return <Redirect to='/login' />
         } else {
             return (
-                <Layout style={{minHeight: '100%'}}>
-                    <Header/>
-                    <Layout>
-                        <Sider collapsed={this.state.collapsed}>
+                <Layout className='page-layout'>
+                    <Header className='header-layout'>
+                        <HeaderContent />
+                    </Header>
+                    <Layout className='main-content'>
+                        <Sider collapsed={this.state.collapsed} className='slider-content'>
                             <LeftNav/>
                         </Sider>
-                        <Layout>
-                            <Content style={{margin: '0 5px', backgroundColor: '#fff'}}>
+                        <Layout style={{marginLeft: 200}}>
+                            <Content className='right-content'>
                                 <Switch>
                                     <Route path='/home' component={Home}/>
                                     <Route path='/category' component={Category}/>

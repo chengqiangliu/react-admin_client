@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {HomeOutlined} from '@ant-design/icons';
+import {DashboardOutlined} from '@ant-design/icons';
 import * as Icons from '@ant-design/icons';
 import {withRouter, Link} from 'react-router-dom';
 
@@ -12,7 +12,7 @@ class PageHeader extends Component {
         if (path === '/home') {
             return (
                 <span key='/home' className="current-span">
-                    <HomeOutlined />
+                    <DashboardOutlined />
                     <span>首页</span>
                 </span>
             )
@@ -27,12 +27,11 @@ class PageHeader extends Component {
                     return (
                         <div key="0">
                             <Link key='/home' to='/home' className="previous-link">
-                                <HomeOutlined />
+                                <DashboardOutlined />
                                 <span>首页</span>
                             </Link>
                             {separator}
                             <span key={item.key} className="current-span">
-                                {dynamicIcon}
                                 <span>{item.title}</span>
                             </span>
                         </div>
@@ -41,13 +40,10 @@ class PageHeader extends Component {
             } else {
                 const childItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
                 if (childItem) {
-                    const dynamicChildIcon = React.createElement(
-                        Icons[childItem.icon],
-                    );
                     return (
                         <div key="0">
                             <Link key='/home' to='/home' className="previous-link">
-                                <HomeOutlined />
+                                <DashboardOutlined />
                                 <span>首页</span>
                             </Link>
                             {separator}
@@ -57,7 +53,6 @@ class PageHeader extends Component {
                             </span>
                             {separator}
                             <span key={childItem.key} className="current-span">
-                                {dynamicChildIcon}
                                 <span>{childItem.title}</span>
                             </span>
                         </div>

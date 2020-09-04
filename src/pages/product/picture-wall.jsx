@@ -26,6 +26,14 @@ export default class PicturesWall extends Component {
         ],
     };
 
+    getImgs = () => {
+        let imgs = [];
+        this.state.fileList.map(file => imgs.push(
+            file.name
+        ));
+        return imgs;
+    }
+
     constructor(props) {
         super(props);
         let fileList = [];
@@ -61,7 +69,6 @@ export default class PicturesWall extends Component {
     };
 
     handleChange = async ({file, fileList}) => {
-        console.log('handleChange()', file.status, fileList.length, file===fileList[fileList.length-1])
         if (file.status === 'done') {
             const {response} = file;
             if (response.status === 0) {

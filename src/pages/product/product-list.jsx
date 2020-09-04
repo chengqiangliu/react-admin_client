@@ -42,7 +42,20 @@ export default class ProductList extends Component {
             {
                 title: '状态',
                 width: 100,
-                dataIndex: 'status',
+                render: (product) => {
+                    const {status, _id} = product;
+                    const newStatus = status === 1 ? 2 : 1;
+                    return (
+                        <span>
+                          <Button type='primary'
+                              onClick={() => this.updateStatus(_id, newStatus)}
+                          >
+                            {status===1 ? '下架' : '上架'}
+                          </Button>
+                          <span>{status===1 ? '在售' : '已下架'}</span>
+                        </span>
+                    );
+                }
             },
             {
                 title: '操作',
@@ -59,6 +72,10 @@ export default class ProductList extends Component {
         ];
     }
 
+    updateStatus = (id, newStatus) => {
+
+    }
+
     getProducts = async (pageNum) => {
         this.pageNum = pageNum;
         this.setState({loading: true});
@@ -73,7 +90,7 @@ export default class ProductList extends Component {
 
         this.setState({loading: false});
         if (result && result.status === 0) {
-            const {total, list} = result;
+            const {total, list} = result.data;
             this.setState({total, products: list});
         } else {
             message.error('获得产品失败');

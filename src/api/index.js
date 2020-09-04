@@ -13,5 +13,6 @@ export const searchProducts = ({pageNum, pageSize, searchName, searchType}) => a
     [searchType]: searchName,
 });
 export const deleteImage = (name) => ajax('/manage/img/delete', {name}, 'POST');
+export const addOrUpdateProduct = (product) => ajax('/manage/product/' + ( product._id ? 'update' : 'add'), product, 'POST');
 
 

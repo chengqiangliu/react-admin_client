@@ -15,7 +15,7 @@ import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 import './index.less'
 
-class Header extends Component {
+class HeaderContent extends Component {
     state = {
         collapsed: false,
     };
@@ -96,4 +96,4 @@ class Header extends Component {
     }
 }
 
-export default withRouter(Header);
+export default withRouter(HeaderContent);
