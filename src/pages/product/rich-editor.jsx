@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
@@ -22,7 +22,9 @@ export default class RichEditor extends Component {
         const {detail} = this.props;
         let editorState;
         if (detail) {
-            editorState = convertFromRaw(detail);
+            const contentBlock = htmlToDraft(detail)
+            const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
+            editorState = EditorState.createWithContent(contentState)
         } else {
             editorState = EditorState.createEmpty();
         }

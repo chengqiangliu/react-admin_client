@@ -10,15 +10,14 @@ import {addOrUpdateProduct} from '../../api/index';
 import {getCategoryList} from '../../api/index';
 
 export default class ProductAddUpdate extends Component {
+    state = {
+        options: [],
+    }
 
     constructor(props) {
         super(props);
         this.picRef = React.createRef();
         this.detailRef = React.createRef();
-    }
-
-    state = {
-        options: [],
     }
 
     onFinish = async (values) => {
@@ -37,6 +36,10 @@ export default class ProductAddUpdate extends Component {
         }
 
         const product = {pCategoryId, categoryId, name, desc, price, imgs, detail};
+        if(this.isUpdate) {
+            product._id = this.product._id
+        }
+
         const result = await addOrUpdateProduct(product);
         if (result && result.status === 0) {
             message.success(`${this.isUpdate ? '更新' : '添加'}商品成功!`)
@@ -45,7 +48,6 @@ export default class ProductAddUpdate extends Component {
             message.error(`${this.isUpdate ? '更新' : '添加'}商品失败!`)
         }
     }
-
 
     validatePrice = (rule, value) => {
         console.log(rule, value);
@@ -114,13 +116,13 @@ export default class ProductAddUpdate extends Component {
 
     render() {
         const {isUpdate, product} = this;
-        const {parentCategoryId, categoryId, imgs, detail} = product;
+        const {name, desc, price, pCategoryId, categoryId, imgs, detail} = product;
         let categoryIds = [];
         if (isUpdate) {
-            if (parentCategoryId === '0') {
-                categoryIds.push(parentCategoryId);
+            if (pCategoryId === '0') {
+                categoryIds.push(categoryId);
             } else {
-                categoryIds.push(parentCategoryId);
+                categoryIds.push(pCategoryId);
                 categoryIds.push(categoryId);
             }
         }
@@ -138,32 +140,23 @@ export default class ProductAddUpdate extends Component {
             labelCol: { span: 3 },
             wrapperCol: { span: 8 },
         };
-        const options = [
-            {
-                value: 'zhejiang',
-                label: 'Zhejiang',
-                children: [
-                    {
-                        value: 'hangzhou',
-                        label: 'Hangzhou',
-                    },
-                ],
-            },
-        ];
 
         return (
             <div>
                 <PageHeader />
                 <Card title={title}>
-                    <Form {...layout} onFinish={this.onFinish}>
+                    <Form {...layout} onFinish={this.onFinish} >
                         <Item
                             label="商品名称"
                             name="name"
+                            initialValue={name}
                             rules={[{ required: true, message: '商品名称必须输入' }]}
                         >
                             <Input placeholder='请输入商品名称'/>
                         </Item>
-                        <Item name="desc" label="商品描述">
+                        <Item name="desc"
+                              initialValue={desc}
+                              label="商品描述">
                             <TextArea
                                 placeholder="请输入商品描述"
                                 autoSize={{ minRows: 2, maxRows: 3 }}
@@ -172,6 +165,7 @@ export default class ProductAddUpdate extends Component {
                         <Item
                             label="商品价值"
                             name="price"
+                            initialValue={price}
                             rules={[{ required: true, message: '商品价值必须输入' },
                                 { validator: this.validatePrice },
                             ]}
@@ -181,6 +175,7 @@ export default class ProductAddUpdate extends Component {
                         <Item
                             label="商品分类"
                             name="categoryIds"
+                            initialValue={categoryIds}
                             rules={[{ required: true, message: '商品分类必须输入' }]}
                         >
                             <Cascader

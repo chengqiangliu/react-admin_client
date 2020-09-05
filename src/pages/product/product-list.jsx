@@ -4,7 +4,7 @@ import {Button, Card, Input, message, Select, Table} from 'antd';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import LinkButton from '../../components/link-button';
 
-import {searchProducts, getProducts} from '../../api/index';
+import {searchProducts, getProducts, updateProductStatus} from '../../api/index';
 import {PAGE_SIZE} from '../../utils/common';
 
 export default class ProductList extends Component {
@@ -63,8 +63,8 @@ export default class ProductList extends Component {
                 render: (product) => {
                     return (
                         <span>
-                            <LinkButton style={{color: '#0b85e8'}} onClick={() => this.props.history.push('/product/detail')}>详情</LinkButton>
-                            <LinkButton style={{color: '#0b85e8'}} onClick={() => this.props.history.push('/product/addUpdate')}>修改</LinkButton>
+                            <LinkButton style={{color: '#0b85e8'}} onClick={() => this.props.history.push('/product/detail', product)}>详情</LinkButton>
+                            <LinkButton style={{color: '#0b85e8'}} onClick={() => this.props.history.push('/product/addUpdate', product)}>修改</LinkButton>
                         </span>
                     )
                 }
@@ -72,8 +72,14 @@ export default class ProductList extends Component {
         ];
     }
 
-    updateStatus = (id, newStatus) => {
-
+    updateStatus = async (id, newStatus) => {
+        const result = await updateProductStatus(id, newStatus);
+        if (result && result.status === 0) {
+            message.success('更新商品成功')
+            await this.getProducts(this.pageNum)
+        } else {
+            message.error('更新商品失败');
+        }
     }
 
     getProducts = async (pageNum) => {
