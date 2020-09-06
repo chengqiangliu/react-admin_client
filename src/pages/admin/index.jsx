@@ -25,12 +25,23 @@ export default class Index extends Component {
 
     state = {
         collapsed: false,
+        marginSize: 200,
     };
 
     componentDidMount() {
         Pubsub.subscribe('Nav_Collapsed', (msg, collapsed) => {
             this.setState({
                 collapsed: !this.state.collapsed,
+            }, () => {
+                if (this.state.collapsed) {
+                    this.setState({
+                        marginSize: 80,
+                    });
+                } else {
+                    this.setState({
+                        marginSize: 200,
+                    });
+                }
             });
         });
     }
@@ -49,7 +60,7 @@ export default class Index extends Component {
                         <Sider collapsed={this.state.collapsed} className='slider-content'>
                             <LeftNav/>
                         </Sider>
-                        <Layout style={{marginLeft: 200}}>
+                        <Layout style={{marginLeft: this.state.marginSize}}>
                             <Content className='right-content'>
                                 <Switch>
                                     <Route path='/home' component={Home}/>

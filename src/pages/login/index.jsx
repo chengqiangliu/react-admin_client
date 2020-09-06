@@ -75,7 +75,7 @@ export default class Index extends Component {
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item>
 
-                            <LinkButton className="login-form-forgot">
+                            <LinkButton style={{color: '#0b85e8'}}>
                                 Forgot password
                             </LinkButton>
                         </Form.Item>

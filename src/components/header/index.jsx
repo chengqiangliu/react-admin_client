@@ -84,12 +84,11 @@ class HeaderContent extends Component {
                 </div>
                 <div className="header-avatar">
                     <Dropdown overlay={this.menu}>
-                        <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />}>
-                        </Avatar>
+                        <div className="avatar-div">
+                            <Avatar style={{ backgroundColor: '#0b85e8' }} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                            <span>{memoryUtils.user.username}</span>
+                        </div>
                     </Dropdown>
-                </div>
-                <div className="header-username">
-                    <span>{memoryUtils.user.username}</span>
                 </div>
             </div>
         );

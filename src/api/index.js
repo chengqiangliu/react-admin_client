@@ -2,6 +2,9 @@ import ajax from './ajax';
 
 export const login = (username, password) => ajax('/login', {username, password}, 'POST');
 export const addUser = (user) => ajax('/manage/user/add', user, 'POST');
+export const addRole = (roleName) => ajax('/manage/role/add', {roleName}, 'POST');
+export const getRoles = () => ajax('/manage/role/list');
+export const reqUpdateRole = (role) => ajax('/manage/role/update', role, 'POST');
 export const getCategoryList = (parentId) => ajax('/manage/category/list', {parentId});
 export const getCategory = (categoryId) => ajax('/manage/category/info', {categoryId});
 export const addCategory = (category) => ajax('/manage/category/add', category, 'POST');

@@ -16,19 +16,16 @@ export default class ProductDetail extends Component {
     };
 
     state = {
-        loading: false,
         pCategory: '',
         category: '',
     };
 
     async componentDidMount() {
         const {pCategoryId, categoryId} = this.props.location.state;
-        this.setState({loading: true});
         if (pCategoryId === '0') {
             const result = await getCategory(categoryId);
             if (result && result.status === 0) {
                 this.setState({
-                    loading: false,
                     pCategory: result.data.name,
                 });
             } else {
@@ -38,7 +35,6 @@ export default class ProductDetail extends Component {
             const results = await Promise.all([getCategory(pCategoryId), getCategory(categoryId)]);
             if (results && results[0].status === 0 && results[1].status === 0) {
                 this.setState({
-                    loading: false,
                     pCategory: results[0].data.name,
                     category: results[1].data.name,
                 });

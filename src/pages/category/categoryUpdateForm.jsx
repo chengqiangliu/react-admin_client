@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 
+const { Item } = Form;
+
 export default class CategoryUpdateForm extends Component {
     static propTypes = {
         categoryName: PropTypes.string.isRequired,
@@ -20,7 +22,6 @@ export default class CategoryUpdateForm extends Component {
         });
     }
     render() {
-        const { Item } = Form;
         const layout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 15 },
