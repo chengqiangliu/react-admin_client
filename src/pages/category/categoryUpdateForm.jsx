@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import { Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 
 const { Item } = Form;
 
-export default class CategoryUpdateForm extends Component {
+export default class CategoryUpdateForm extends PureComponent {
     static propTypes = {
         categoryName: PropTypes.string.isRequired,
         setForm: PropTypes.func.isRequired,

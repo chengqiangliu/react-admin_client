@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Upload, Modal, message} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import getBase64 from '../../utils/commonUtils';
 import {deleteImage} from '../../api';
 import {BASE_IMG_URL} from '../../utils/common';
 
-export default class PicturesWall extends Component {
+export default class PicturesWall extends PureComponent {
     static propTypes = {
         imgs: PropTypes.array,
     };

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Form, Input, Tree} from 'antd';
 import PropTypes from 'prop-types';
 import menuList from '../../config/menuConfig';
 
 const { Item } = Form;
 
-export default class RoleAuth extends Component {
+export default class RoleAuth extends PureComponent {
     static propTypes = {
         role: PropTypes.object,
     }
@@ -32,7 +32,7 @@ export default class RoleAuth extends Component {
 
     onCheck = checkedKeys => {
         this.setState({
-            checkedKeys
+            checkedKeys: checkedKeys
         });
     };
 
@@ -46,7 +46,7 @@ export default class RoleAuth extends Component {
         });
     }
 
-    componentWillMount () {
+    UNSAFE_componentWillMount () {
         this.treeData = this.getTreeNodes(menuList)
     }
 

@@ -120,14 +120,6 @@ export default class Role extends Component {
             } else {
                 message.error('当前用户角色权限失败');
             }
-            // const result = await addRole(roleName);
-            // if (result && result.status === 0) {
-            //     message.success('添加角色成功');
-            //     await this.getRoles();
-            // } else {
-            //     message.error('添加角色失败');
-            // }
-            // this.addForm.resetFields();
             this.setState({
                 modalVisible: 0,
             });
@@ -199,7 +191,7 @@ export default class Role extends Component {
                                total,
                                defaultPageSize: PAGE_SIZE,
                                showQuickJumper: true,
-                               onChange: this.getProducts}}
+                               onChange: this.getRoles}}
                     />
                 </Card>
                 <Modal

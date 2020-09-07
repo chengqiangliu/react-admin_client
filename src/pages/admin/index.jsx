@@ -10,7 +10,9 @@ import memoryUtils from '../../utils/memoryUtils';
 import HeaderContent from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../home';
-import User from '../user';
+import UserList from '../user/user-list';
+import UserCenter from '../user/user-center';
+import UserSetting from '../user/user-setting';
 import Role from '../role';
 import Category from '../category';
 import Product from '../product';
@@ -67,7 +69,9 @@ export default class Index extends Component {
                                     <Route path='/category' component={Category}/>
                                     <Route path='/product' component={Product}/>
                                     <Route path='/role' component={Role}/>
-                                    <Route path='/user' component={User}/>
+                                    <Route path='/user/list' component={UserList}/>
+                                    <Route path='/user/center' component={UserCenter}/>
+                                    <Route path='/user/setting' component={UserSetting}/>
                                     <Route path='/charts/bar' component={Bar}/>
                                     <Route path='/charts/line' component={Line}/>
                                     <Route path='/charts/pie' component={Pie}/>

@@ -1,8 +1,11 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Form, Input, Select} from 'antd';
 import PropTypes from 'prop-types';
 
-export default class CategoryAddForm extends Component {
+const { Option } = Select;
+const { Item } = Form;
+
+export default class CategoryAddForm extends PureComponent {
     static propTypes = {
         categoryList: PropTypes.array.isRequired,
         parentId: PropTypes.string.isRequired,
@@ -22,8 +25,6 @@ export default class CategoryAddForm extends Component {
     }
 
     render() {
-        const { Option } = Select;
-        const { Item } = Form;
         const layout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 15 },

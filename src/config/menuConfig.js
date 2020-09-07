@@ -9,7 +9,7 @@ const menuList = [
         title: '商品',
         key: '/products',
         icon: 'AppstoreOutlined',
-        children: [ // 子菜单列表
+        children: [
             {
                 title: '品类管理',
                 key: '/category',
@@ -25,7 +25,24 @@ const menuList = [
     {
         title: '用户管理',
         key: '/user',
-        icon: 'UserOutlined'
+        icon: 'UserOutlined',
+        children: [
+            {
+                title: '用户列表',
+                key: '/user/list',
+                icon: 'BarsOutlined'
+            },
+            {
+                title: '个人中心',
+                key: '/user/center',
+                icon: 'UserOutlined'
+            },
+            {
+                title: '个人设定',
+                key: '/user/setting',
+                icon: 'SettingOutlined'
+            },
+        ]
     },
     {
         title: '角色管理',

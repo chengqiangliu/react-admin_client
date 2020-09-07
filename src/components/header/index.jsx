@@ -49,13 +49,13 @@ class HeaderContent extends Component {
     menu = (
         <Menu>
             <Menu.Item key="0">
-                <LinkButton>
+                <LinkButton onClick={() => this.props.history.push('/user/center')}>
                     <UserOutlined />
                     <span style={{marginLeft: 10}}>个人中心</span>
                 </LinkButton>
             </Menu.Item>
             <Menu.Item key="1">
-                <LinkButton>
+                <LinkButton onClick={() => this.props.history.push('/user/setting')}>
                     <SettingOutlined />
                     <span style={{marginLeft: 10}}>个人设置</span>
                 </LinkButton>

@@ -1,7 +1,10 @@
 import ajax from './ajax';
 
 export const login = (username, password) => ajax('/login', {username, password}, 'POST');
-export const addUser = (user) => ajax('/manage/user/add', user, 'POST');
+export const reqAddOrUpdateUser = (user) => ajax('/manage/user/'+(user._id ? 'update' : 'add'), user, 'POST')
+export const reqDeleteUser = (userId) => ajax('/manage/user/delete', {userId}, 'POST');
+
+export const reqGetUsers = () => ajax('/manage/user/list');
 export const addRole = (roleName) => ajax('/manage/role/add', {roleName}, 'POST');
 export const getRoles = () => ajax('/manage/role/list');
 export const reqUpdateRole = (role) => ajax('/manage/role/update', role, 'POST');

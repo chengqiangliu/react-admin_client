@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PageHeader from '../../components/page-header';
 import {List, Card, message} from 'antd';
 import LinkButton from '../../components/link-button';
@@ -10,7 +10,7 @@ import './product.less';
 
 const Item = List.Item
 
-export default class ProductDetail extends Component {
+export default class ProductDetail extends PureComponent {
     static propsTypes = {
         product: PropsTypes.object.isRequired,
     };

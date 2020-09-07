@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
@@ -8,7 +8,7 @@ import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 
-export default class RichEditor extends Component {
+export default class RichEditor extends PureComponent {
     static propTypes = {
         detail: PropTypes.string,
     }
@@ -35,7 +35,7 @@ export default class RichEditor extends Component {
 
     onEditorStateChange = (editorState) => {
         this.setState({
-            editorState,
+            editorState: {...editorState}
         });
     };
 

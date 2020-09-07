@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Form, Input} from 'antd';
 import PropTypes from 'prop-types';
 
-export default class RoleAddForm extends Component {
+export default class RoleAddForm extends PureComponent {
     static propTypes = {
         setForm: PropTypes.func.isRequired,
     };
