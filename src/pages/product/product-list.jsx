@@ -4,7 +4,7 @@ import {Button, Card, Input, message, Select, Table} from 'antd';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import LinkButton from '../../components/link-button';
 
-import {searchProducts, getProducts, updateProductStatus} from '../../api/index';
+import {reqSearchProducts, reqGetProducts, reqUpdateStatus} from '../../api/index';
 import {PAGE_SIZE} from '../../utils/common';
 
 export default class ProductList extends Component {
@@ -73,7 +73,7 @@ export default class ProductList extends Component {
     }
 
     updateStatus = async (id, newStatus) => {
-        const result = await updateProductStatus(id, newStatus);
+        const result = await reqUpdateStatus(id, newStatus);
         if (result && result.status === 0) {
             message.success('更新商品成功')
             await this.getProducts(this.pageNum)
@@ -89,9 +89,9 @@ export default class ProductList extends Component {
         const {searchType, searchName} = this.state;
         let result;
         if (searchName) {
-            result = await searchProducts({pageNum: 1, pageSize: PAGE_SIZE, searchType, searchName});
+            result = await reqSearchProducts({pageNum: 1, pageSize: PAGE_SIZE, searchType, searchName});
         } else {
-            result = await getProducts(pageNum, PAGE_SIZE);
+            result = await reqGetProducts(pageNum, PAGE_SIZE);
         }
 
         this.setState({loading: false});

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import { withRouter } from 'react-router-dom';
 import Pubsub from 'pubsub-js';
 import { Menu, Dropdown, Avatar, Modal } from 'antd';
@@ -9,13 +9,13 @@ import { UserOutlined,
     SettingOutlined,
     LogoutOutlined } from '@ant-design/icons';
 
+import storageUtils from '../../utils/storageUtils';
+import memoryUtils from '../../utils/memoryUtils';
 import logo from '../../assets/images/logo.png'
 import LinkButton from '../link-button';
-import memoryUtils from '../../utils/memoryUtils';
-import storageUtils from '../../utils/storageUtils';
 import './index.less'
 
-class HeaderContent extends Component {
+class HeaderContent extends PureComponent {
     state = {
         collapsed: false,
     };

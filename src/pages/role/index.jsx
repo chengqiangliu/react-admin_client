@@ -4,7 +4,7 @@ import {Button, Card, message, Modal, Table} from 'antd';
 import {PAGE_SIZE} from '../../utils/common';
 import RoleAddForm from './role-add-form';
 import RoleAuth from './role-auth';
-import {addRole, getRoles, reqUpdateRole} from '../../api';
+import {reqAddRole, reqGetRoles, reqUpdateRole} from '../../api';
 import {formateDate} from '../../utils/dateUtils';
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
@@ -48,7 +48,7 @@ export default class Role extends Component {
 
     getRoles = async () => {
         this.setState({loading: true});
-        const result = await getRoles();
+        const result = await reqGetRoles();
         this.setState({loading: false});
         if (result && result.status === 0) {
             const roles = result.data;
@@ -74,7 +74,7 @@ export default class Role extends Component {
     addRole = async () => {
         try {
             const { roleName } = await this.addForm.validateFields();
-            const result = await addRole(roleName);
+            const result = await reqAddRole(roleName);
             if (result && result.status === 0) {
                 message.success('添加角色成功');
                 await this.getRoles();

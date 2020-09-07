@@ -1,41 +1,58 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import { Menu } from 'antd';
 import * as Icons from '@ant-design/icons';
 
-import './index.less'
+import memoryUtils from '../../utils/memoryUtils';
 import menuList from '../../config/menuConfig'
+import './index.less'
 
 const { SubMenu } = Menu;
 
-class LeftNav extends Component {
-     getMenuNodes = (menuList) => {
+class LeftNav extends PureComponent {
+    hasAuth = (item) => {
+        const user = memoryUtils.user;
+        const {key, isPublic} = item;
+        const menus = user.role.menus;
+        const username = user.username;
+
+        if (isPublic || username === 'admin' || menus.indexOf(key) !== -1) {
+            return true;
+        } else if (item.children) {
+            return !!item.children.find(child => menus.indexOf(child.key) !== -1);
+        }
+        return false;
+    }
+
+    getMenuNodes = (menuList) => {
          const path = this.props.location.pathname
          return menuList.map((item) => {
              const dynamicIcon = React.createElement(
                  Icons[item.icon],
              );
-             if (!item.children) {
-                 return (
-                     <Menu.Item key={item.key} icon={dynamicIcon}>
-                         <Link to={item.key}>
-                             <span>{item.title}</span>
-                         </Link>
-                     </Menu.Item>
-                 )
-             } else {
-                 const childItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
-                 if (childItem) {
-                     this.openKey = item.key;
+             if (this.hasAuth(item)) {
+                 if (!item.children) {
+                     return (
+                         <Menu.Item key={item.key} icon={dynamicIcon}>
+                             <Link to={item.key}>
+                                 <span>{item.title}</span>
+                             </Link>
+                         </Menu.Item>
+                     )
+                 } else {
+                     const childItem = item.children.find(cItem => path.indexOf(cItem.key) === 0);
+                     if (childItem) {
+                         this.openKey = item.key;
+                     }
+                     return (
+                         <SubMenu key={item.key} title={item.title} icon={dynamicIcon}>
+                             {this.getMenuNodes(item.children)}
+                         </SubMenu>
+                     )
                  }
-                 return (
-                    <SubMenu key={item.key} title={item.title} icon={dynamicIcon}>
-                        {this.getMenuNodes(item.children)}
-                    </SubMenu>
-                 )
              }
          })
-     }
+    }
 
     /**
      * prepare data for render

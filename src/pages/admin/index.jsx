@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {Layout} from 'antd';
 import Pubsub from 'pubsub-js';
@@ -23,7 +23,7 @@ import Pie from '../pie';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-export default class Index extends Component {
+export default class Index extends PureComponent {
 
     state = {
         collapsed: false,

@@ -114,7 +114,7 @@ export default class UserList extends Component {
     }
 
     closeAddModal = () => {
-        // this.addForm.resetFields();
+        this.addForm.resetFields();
         this.setState({
             modalVisible: 0,
         });

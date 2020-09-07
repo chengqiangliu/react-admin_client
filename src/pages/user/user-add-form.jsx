@@ -17,6 +17,15 @@ export default class UserAddForm extends PureComponent {
         this.props.setForm(this.formRef.current);
     }
 
+    componentDidUpdate() {
+        this.formRef.current.setFieldsValue({
+            username: this.props.user.username,
+            phone: this.props.user.phone,
+            email: this.props.user.email,
+            role_id: this.props.user.role_id,
+        });
+    }
+
     render() {
         const { Item } = Form;
         const layout = {

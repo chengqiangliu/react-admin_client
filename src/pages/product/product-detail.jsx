@@ -5,7 +5,7 @@ import LinkButton from '../../components/link-button';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import PropsTypes from 'prop-types';
 import {BASE_IMG_URL} from '../../utils/common'
-import {getCategory} from '../../api/index';
+import {reqFindCategory} from '../../api/index';
 import './product.less';
 
 const Item = List.Item
@@ -23,7 +23,7 @@ export default class ProductDetail extends PureComponent {
     async componentDidMount() {
         const {pCategoryId, categoryId} = this.props.location.state;
         if (pCategoryId === '0') {
-            const result = await getCategory(categoryId);
+            const result = await reqFindCategory(categoryId);
             if (result && result.status === 0) {
                 this.setState({
                     pCategory: result.data.name,
@@ -32,7 +32,7 @@ export default class ProductDetail extends PureComponent {
                 message.error('获取分类失败');
             }
         } else {
-            const results = await Promise.all([getCategory(pCategoryId), getCategory(categoryId)]);
+            const results = await Promise.all([reqFindCategory(pCategoryId), reqFindCategory(categoryId)]);
             if (results && results[0].status === 0 && results[1].status === 0) {
                 this.setState({
                     pCategory: results[0].data.name,

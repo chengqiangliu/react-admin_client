@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import {login} from '../../api/index'
+import {reqLogin} from '../../api/index'
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 
@@ -14,7 +14,7 @@ import LinkButton from '../../components/link-button';
 export default class Index extends Component {
     onFinish = async (values) => {
         const {username, password} = values;
-        const result = await login(username, password);
+        const result = await reqLogin(username, password);
         if (result.status === 0) {
 
             // save the current user

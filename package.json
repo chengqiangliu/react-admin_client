@@ -51,6 +51,8 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
+  },
   "proxy": "http://localhost:5000"
 }

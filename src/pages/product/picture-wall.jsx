@@ -3,8 +3,8 @@ import {Upload, Modal, message} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
-import getBase64 from '../../utils/commonUtils';
-import {deleteImage} from '../../api';
+import commonUtils from '../../utils/commonUtils';
+import {reqDeleteImage} from '../../api';
 import {BASE_IMG_URL} from '../../utils/common';
 
 export default class PicturesWall extends PureComponent {
@@ -58,7 +58,7 @@ export default class PicturesWall extends PureComponent {
 
     handlePreview = async file => {
         if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
+            file.preview = await commonUtils.getBase64(file.originFileObj);
         }
 
         this.setState({
@@ -81,7 +81,7 @@ export default class PicturesWall extends PureComponent {
                 message.error('上传图片失败');
             }
         } else if (file.status === 'removed') {
-            const response = await deleteImage(file.name);
+            const response = await reqDeleteImage(file.name);
             if (response.status === 0) {
                 message.success('删除图片成功');
             } else {

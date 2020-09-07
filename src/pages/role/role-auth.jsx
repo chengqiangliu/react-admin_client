@@ -39,7 +39,7 @@ export default class RoleAuth extends PureComponent {
     /*
     当组件接收到新的属性时自动调用
    */
-    componentWillReceiveProps (nextProps) {
+    UNSAFE_componentWillReceiveProps (nextProps) {
         const menus = nextProps.role.menus;
         this.setState({
             checkedKeys: menus,

@@ -7,7 +7,7 @@ import PageHeader from '../../components/page-header';
 import LinkButton from '../../components/link-button';
 import CategoryAddForm from './categoryAddForm';
 import CategoryUpdateForm from './categoryUpdateForm';
-import {getCategoryList, addCategory, updateCategory} from '../../api'
+import {reqGetCategoryList, reqAddCategory, reqUpdateCategory} from '../../api'
 
 export default class Category extends Component {
     state = {
@@ -32,10 +32,10 @@ export default class Category extends Component {
         });
     };
 
-    getCategoryList = async (parentId) => {
+    showSubCategoryListList = async (parentId) => {
         this.setState({loading: true});
         parentId = parentId || this.state.parentId;
-        const result = await getCategoryList(parentId);
+        const result = await reqGetCategoryList(parentId);
         this.setState({loading: false});
         if (result && result.status === 0) {
             const categoryList = result.data;
@@ -54,12 +54,12 @@ export default class Category extends Component {
     addCatogory = async () => {
         try {
             const {parentId, categoryName} = await this.addForm.validateFields();
-            const result = await addCategory({parentId, categoryName});
+            const result = await reqAddCategory({parentId, categoryName});
             if (result && result.status === 0) {
                 if (parentId === this.state.parentId) {
-                    await this.getCategoryList();
+                    await this.showSubCategoryListList();
                 } else if (parentId === '0') {
-                    await this.getCategoryList('0');
+                    await this.showSubCategoryListList('0');
                 }
             } else {
                 message.error('添加分类失败');
@@ -84,10 +84,10 @@ export default class Category extends Component {
         try {
             const {categoryName} = await this.updateForm.validateFields();
             const categoryId = this.category._id;
-            const result = await updateCategory({categoryId, categoryName});
+            const result = await reqUpdateCategory({categoryId, categoryName});
             this.updateForm.resetFields()
             if (result && result.status === 0) {
-                await this.getCategoryList();
+                await this.showSubCategoryListList();
             } else {
                 message.error('修改分类失败');
             }
@@ -119,7 +119,7 @@ export default class Category extends Component {
             parentId: category._id,
             parentName: category.name,
         }, () => {
-            this.getCategoryList();
+            this.showSubCategoryListList();
         });
     }
 
@@ -160,7 +160,7 @@ export default class Category extends Component {
     }
 
     componentDidMount() {
-        this.getCategoryList('0');
+        this.showSubCategoryListList('0');
     }
 
     render() {

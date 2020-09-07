@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import PageHeader from '../../components/page-header';
 import {Card, Form, Input, Cascader, Button, message} from 'antd';
+import {ArrowLeftOutlined} from '@ant-design/icons';
+
+import {reqAddOrUpdateProduct, reqGetCategoryList} from '../../api/index';
+import PageHeader from '../../components/page-header';
 import LinkButton from '../../components/link-button';
 import PicturesWall from './picture-wall';
-import {ArrowLeftOutlined} from '@ant-design/icons';
 import RichEditor from './rich-editor';
-import {addOrUpdateProduct} from '../../api/index';
-
-import {getCategoryList} from '../../api/index';
 
 export default class ProductAddUpdate extends Component {
     state = {
@@ -40,7 +39,7 @@ export default class ProductAddUpdate extends Component {
             product._id = this.product._id
         }
 
-        const result = await addOrUpdateProduct(product);
+        const result = await reqAddOrUpdateProduct(product);
         if (result && result.status === 0) {
             message.success(`${this.isUpdate ? '更新' : '添加'}商品成功!`)
             this.props.history.goBack();
@@ -68,7 +67,7 @@ export default class ProductAddUpdate extends Component {
     }
 
     getCategoryList = async (parentId) => {
-        const result = await getCategoryList(parentId);
+        const result = await reqGetCategoryList(parentId);
         if (result && result.status === 0) {
             const categoryList = result.data;
             if(parentId === '0') {
