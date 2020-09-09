@@ -16,9 +16,9 @@ import UserSetting from '../user/user-setting';
 import Role from '../role';
 import Category from '../category';
 import Product from '../product';
-import Bar from '../bar';
-import Line from '../line';
-import Pie from '../pie';
+import Bar from '../charts/bar';
+import Line from '../charts/line';
+import Pie from '../charts/pie';
 
 
 const { Header, Footer, Sider, Content } = Layout;
