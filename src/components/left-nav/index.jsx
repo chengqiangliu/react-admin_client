@@ -2,16 +2,21 @@ import React, {PureComponent} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import { Menu } from 'antd';
 import * as Icons from '@ant-design/icons';
+import {connect} from 'react-redux';
 
-import memoryUtils from '../../utils/memoryUtils';
 import menuList from '../../config/menuConfig'
 import './index.less'
+import PropTypes from 'prop-types';
 
 const { SubMenu } = Menu;
 
 class LeftNav extends PureComponent {
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+    }
+
     hasAuth = (item) => {
-        const user = memoryUtils.user;
+        const user = this.props.user;
         const {key, isPublic} = item;
         const menus = user.role.menus;
         const username = user.username;
@@ -80,4 +85,7 @@ class LeftNav extends PureComponent {
     }
 }
 
-export default withRouter(LeftNav);
+export default connect(
+    state => ({user: state.user}),
+    {}
+)(withRouter(LeftNav));

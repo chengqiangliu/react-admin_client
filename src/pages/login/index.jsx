@@ -1,38 +1,34 @@
 import React, {Component} from 'react';
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import {Form, Input, Button, Checkbox, message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
-import {reqLogin} from '../../api/index'
-import memoryUtils from '../../utils/memoryUtils';
-import storageUtils from '../../utils/storageUtils';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import logo from '../../assets/images/logo.png'
 import './index.less'
-import {Redirect} from 'react-router-dom';
 import LinkButton from '../../components/link-button';
+import {login} from '../../redux/actions';
 
-export default class Index extends Component {
+class Login extends Component {
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        login: PropTypes.func.isRequired
+    }
+
     onFinish = async (values) => {
         const {username, password} = values;
-        const result = await reqLogin(username, password);
-        if (result.status === 0) {
-
-            // save the current user
-            const user = result.data;
-            memoryUtils.user = user;
-            storageUtils.saveUser(user);
-
-            // forward to admin page
-            this.props.history.replace('/');
-        } else {
-            message.error(result.msg)
-        }
+        this.props.login(username, password);
     };
 
     render() {
-        const user = memoryUtils.user;
-        if (user && user.username) {
+        const user = this.props.user
+        if(user && user._id) {
             return <Redirect to='/'/>
+        }
+
+        if(user && user.msg) {
+            message.error(user.msg);
         }
 
         return (
@@ -91,3 +87,8 @@ export default class Index extends Component {
         );
     }
 }
+
+export default connect(
+    state => ({user: state.user}),
+    {login}
+)(Login);

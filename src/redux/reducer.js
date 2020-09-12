@@ -1,23 +1,29 @@
 import {combineReducers} from 'redux';
-import action from './action-types';
-import storageUtils from "../utils/storageUtils"
+import {RECEIVE_USER, RESET_USER, SHOW_ERROR_MSG} from './action-types';
+import storageUtils from '../utils/storageUtils';
 
-const initHeaderTitle = '首页';
-function headerTitle(state=initHeaderTitle, action) {
+const initUser = storageUtils.getUser();
+
+function user(state = initUser, action) {
     switch (action.type) {
+        case RECEIVE_USER:
+            return action.data;
+        case RESET_USER:
+            return {};
+        case SHOW_ERROR_MSG:
+            const msg = action.data;
+            return {...state, msg}
         default:
             return state;
     }
 }
 
-const initUser = storageUtils.getUser()
-function user(state=initUser, action) {
+function others(state={}, action) {
     switch (action.type) {
+
         default:
             return state;
     }
 }
 
-export default combineReducers({
-    headerTitle, user
-});
+export default combineReducers({user, others});
