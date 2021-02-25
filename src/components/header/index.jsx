@@ -8,17 +8,23 @@ import { UserOutlined,
     ExclamationCircleOutlined,
     SettingOutlined,
     LogoutOutlined } from '@ant-design/icons';
+import {connect} from 'react-redux';
+import {logout} from '../../redux/actions';
 
-import storageUtils from '../../utils/storageUtils';
-import memoryUtils from '../../utils/memoryUtils';
 import logo from '../../assets/images/logo.png'
 import LinkButton from '../link-button';
 import './index.less'
+import PropTypes from 'prop-types';
 
 class HeaderContent extends PureComponent {
     state = {
         collapsed: false,
     };
+
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        logout: PropTypes.func.isRequired
+    }
 
     toggleCollapsed = () => {
         this.setState({
@@ -37,11 +43,7 @@ class HeaderContent extends PureComponent {
             cancelText: '取消',
             onOk: () => {
                 // remove user info from memory and local
-                memoryUtils.user = {};
-                storageUtils.removeUser();
-
-                // 跳转到login
-                this.props.history.replace('/login')
+                this.props.logout();
             }
         });
     };
@@ -71,6 +73,7 @@ class HeaderContent extends PureComponent {
     );
 
     render() {
+        const {user} = this.props;
         return (
             <div className="header">
                 <header className="header-logo" onClick={this.redirectToHome}>
@@ -86,7 +89,7 @@ class HeaderContent extends PureComponent {
                     <Dropdown overlay={this.menu}>
                         <div className="avatar-div">
                             <Avatar style={{ backgroundColor: '#0b85e8' }} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                            <span>{memoryUtils.user.username}</span>
+                            <span>{user.username}</span>
                         </div>
                     </Dropdown>
                 </div>
@@ -95,4 +98,7 @@ class HeaderContent extends PureComponent {
     }
 }
 
-export default withRouter(HeaderContent);
+export default connect(
+    state => ({user: state.user}),
+    {logout}
+)(withRouter(HeaderContent));

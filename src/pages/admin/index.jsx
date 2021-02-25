@@ -2,11 +2,11 @@ import React, {PureComponent} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {Layout} from 'antd';
 import Pubsub from 'pubsub-js';
+import {connect} from 'react-redux';
 
 import 'antd/dist/antd.less';
 import './index.less';
 
-import memoryUtils from '../../utils/memoryUtils';
 import HeaderContent from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../home';
@@ -16,19 +16,24 @@ import UserSetting from '../user/user-setting';
 import Role from '../role';
 import Category from '../category';
 import Product from '../product';
-import Bar from '../bar';
-import Line from '../line';
-import Pie from '../pie';
-
+import Bar from '../charts/bar';
+import Line from '../charts/line';
+import Pie from '../charts/pie';
+import NotFound from '../not-found';
+import PropTypes from 'prop-types';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-export default class Index extends PureComponent {
+class Admin extends PureComponent {
 
     state = {
         collapsed: false,
         marginSize: 200,
     };
+
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+    }
 
     componentDidMount() {
         Pubsub.subscribe('Nav_Collapsed', (msg, collapsed) => {
@@ -49,7 +54,7 @@ export default class Index extends PureComponent {
     }
 
     render() {
-        const user = memoryUtils.user;
+        const {user} = this.props;
         if (!user || !user.username) {
             return <Redirect to='/login' />
         } else {
@@ -65,6 +70,7 @@ export default class Index extends PureComponent {
                         <Layout style={{marginLeft: this.state.marginSize}}>
                             <Content className='right-content'>
                                 <Switch>
+                                    <Redirect exact from='/' to='/home'/>
                                     <Route path='/home' component={Home}/>
                                     <Route path='/category' component={Category}/>
                                     <Route path='/product' component={Product}/>
@@ -75,7 +81,7 @@ export default class Index extends PureComponent {
                                     <Route path='/charts/bar' component={Bar}/>
                                     <Route path='/charts/line' component={Line}/>
                                     <Route path='/charts/pie' component={Pie}/>
-                                    <Redirect to='/home'/>
+                                    <Route component={NotFound}/>
                                 </Switch>
                             </Content>
                             <Footer className="footer">
@@ -88,3 +94,8 @@ export default class Index extends PureComponent {
         }
     }
 }
+
+export default connect(
+    state => ({user: state.user}),
+    {}
+)(Admin);

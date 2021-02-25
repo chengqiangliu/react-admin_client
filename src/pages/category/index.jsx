@@ -32,7 +32,7 @@ export default class Category extends Component {
         });
     };
 
-    showSubCategoryListList = async (parentId) => {
+    getCategoryList = async (parentId) => {
         this.setState({loading: true});
         parentId = parentId || this.state.parentId;
         const result = await reqGetCategoryList(parentId);
@@ -57,9 +57,9 @@ export default class Category extends Component {
             const result = await reqAddCategory({parentId, categoryName});
             if (result && result.status === 0) {
                 if (parentId === this.state.parentId) {
-                    await this.showSubCategoryListList();
+                    await this.getCategoryList();
                 } else if (parentId === '0') {
-                    await this.showSubCategoryListList('0');
+                    await this.getCategoryList('0');
                 }
             } else {
                 message.error('添加分类失败');
@@ -87,7 +87,7 @@ export default class Category extends Component {
             const result = await reqUpdateCategory({categoryId, categoryName});
             this.updateForm.resetFields()
             if (result && result.status === 0) {
-                await this.showSubCategoryListList();
+                await this.getCategoryList();
             } else {
                 message.error('修改分类失败');
             }
@@ -119,7 +119,7 @@ export default class Category extends Component {
             parentId: category._id,
             parentName: category.name,
         }, () => {
-            this.showSubCategoryListList();
+            this.getCategoryList();
         });
     }
 
@@ -160,7 +160,7 @@ export default class Category extends Component {
     }
 
     componentDidMount() {
-        this.showSubCategoryListList('0');
+        this.getCategoryList('0');
     }
 
     render() {
